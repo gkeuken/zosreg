@@ -1,0 +1,44 @@
+REXX:
+    DATA:   |
+            /* REXX */
+             address tso "ALLOC FI(SMPCSI) DA('{{ csiname }}') SHR"
+
+             address tso "ALLOC FI(SMPRPT) PATH('{{ smpedata }}') ",
+                         "PATHOPTS(OCREAT,OWRONLY,OAPPEND,OSYNC) LRECL(133) ",
+                         "PATHMOD(SIRWXU,SIRWXG) FILEDATA(TEXT) RECFM(V B)"
+
+             address tso "ALLOC FI(SMPOUT) PATH('{{ smpout }}') ",
+                         "PATHOPTS(OCREAT,OWRONLY,OAPPEND,OSYNC) LRECL(133) ",
+                         "PATHMOD(SIRWXU,SIRWXG) FILEDATA(TEXT) RECFM(V B)"
+
+             address tso "ALLOC FI(SMPLOG) PATH('{{ smplog }}') ",
+                         "PATHOPTS(OCREAT,OWRONLY,OAPPEND,OSYNC) LRECL(510) ",
+                         "PATHMOD(SIRWXU,SIRWXG) FILEDATA(TEXT) RECFM(V B)"
+
+             address tso "ALLOC FI(SMPLOGA) PATH('{{ smploga }}') ",
+                         "PATHOPTS(OCREAT,OWRONLY,OAPPEND,OSYNC) LRECL(510) ",
+                         "PATHMOD(SIRWXU,SIRWXG) FILEDATA(TEXT) RECFM(V B)"
+
+             address tso "ALLOC FI(SMPLIST) PATH('{{ smpedata }}') ",
+                         "PATHOPTS(OCREAT,OWRONLY,OAPPEND,OSYNC) LRECL(133) ",
+                         "PATHMOD(SIRWXU,SIRWXG) FILEDATA(TEXT) RECFM(V B)"
+
+             address sh "echo ' SET BDY(GLOBAL) .' > {{ vardir }}/smpcntl"
+             address sh "echo ' LIST {{ listcmd }} . ' >> {{ vardir }}/smpcntl"
+
+             address tso "ALLOC FI(SMPCNTL) PATH('{{ vardir }}/smpcntl')",
+                         "FILEDATA(TEXT) RECFM(F B) LRECL(80)"
+
+             address tso "call 'SYS1.MIGLIB(GIMSMP)'"
+
+            exit 0
+CSILIST:
+  CSIS:
+    - SMPE.ZOS31.CSI
+    - SMPE.FEU.CSI
+    - SMPEDEV.PROGPROD.CSI
+    - SMPE.PROGPROD.CSI
+    - CICSTS62.CSI
+    - MQCD94.CSI
+    - IMSV15.CSI
+    - DB2V13.CSI
