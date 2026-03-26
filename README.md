@@ -1,2 +1,2 @@
 # zosreg
-Consolidated z/OS Software Registry
+Centralized Software Registry via Python and Dictionaries
